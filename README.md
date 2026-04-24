@@ -1,26 +1,22 @@
 # ShieldSync
-
 https://modrinth.com/plugin/shield-sync
+ShieldSync is a Paper plugin that keeps shield raise timing consistent across different pings.
 
-ShieldSync is a Paper plugin that keeps shield raise timing fair across different pings.
-
-In vanilla, shields have a 5-tick (250 ms) raise delay. On high ping, the server receives shield input later, so blocking feels worse. ShieldSync measures ping with PacketEvents keep-alive probes and reduces the server-side delay so effective raise timing stays close to vanilla intent.
+In vanilla, shields have a 5 tick (250 ms) raise delay built in, regardless of ping. However, when you are higher ping, the delay that raises your shield will be the 5 tick delay + your ping. What this mod does is subtract your ping from the 5 tick delay, which reduces the shield delay closer to 250 ms regardless of ping, simulating how shielding would be on lower ping.
 
 ## What It Does
 
-- Sends periodic keep-alive probes to each player.
-- Measures round-trip time and keeps a stable ping sample.
+- Fetches a players ping using `keepAlive` packets.
 - Converts ping into shield compensation ticks.
-- Intercepts shield `USE_ITEM` packets (off-hand shield use).
-- Applies adjusted shield delay:
-  - `adjustedDelay = max(0, 5 - compensationTicks)`
-
+- Due to how the ticking system works, the ping must be calculated into ticks. **This means that the delay can only be reduced by multiples of 50 ms. For example, if a player is 80 ms, it can only reduce the delay by 50 ms (1 tick), so the shields will feel like what it would on 30 ms, not 0. If they are 180 ms, itll reduce it by 150 ms (3 ticks), and it'll feel like 30 ms.**
+- If ping is over 250 ms, it'll remove all 5 ticks.
+  
+![Pretty much how it works, 150 ms is subtracted so shielding will feel synonymous to someone who's 30 ms.](https://cdn.modrinth.com/data/cached_images/ce032bdd0f9873dec62762588738191bd78ecc51.png)
+150 ms is subtracted so shielding will feel synonymous to someone who's 30 ms.
 ## Requirements
-
-- Paper server (1.21 API target in `plugin.yml`)
-- PacketEvents plugin installed on the server
-- Java runtime matching your server/build setup (project currently builds with Java 21 toolchain)
-
+**NOTE: This mod has only been tested on 1.21.11. Use this version for the best results. DM me on discord (pheological) if you want another version for your server.**
+**
+Must be after version 1.21
 ## Installation
 
 1. Build the plugin jar.
@@ -42,3 +38,6 @@ In vanilla, shields have a 5-tick (250 ms) raise delay. On high ping, the server
 - PacketEvents is used as an external dependency plugin (not shaded).
 - Debug output is intended for testing/tuning and can be noisy.
 
+## Credits
+- xSweetJapan for idea (sweetjapan on discord)
+- [caseload](https://modrinth.com/user/caseload) for ping fetching implementation
