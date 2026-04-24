@@ -1,9 +1,0 @@
-name: ShieldSync
-version: '1.0-SNAPSHOT'
-main: pheological.shieldSync.ShieldSync
-api-version: '1.21'
-depend: [packetevents]
-commands:
-  shieldsync:
-    description: ShieldSync debug and control command
-    usage: /<command> <enable|disable|status> | /<command> debug [player]
