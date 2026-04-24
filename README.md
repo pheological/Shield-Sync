@@ -1,5 +1,7 @@
 # ShieldSync
 
+https://modrinth.com/plugin/shield-sync
+
 ShieldSync is a Paper plugin that keeps shield raise timing fair across different pings.
 
 In vanilla, shields have a 5-tick (250 ms) raise delay. On high ping, the server receives shield input later, so blocking feels worse. ShieldSync measures ping with PacketEvents keep-alive probes and reduces the server-side delay so effective raise timing stays close to vanilla intent.
